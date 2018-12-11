@@ -9,6 +9,7 @@ import {
 } from "./../../commons/styled/StyledUtils";
 import { connect } from "react-redux";
 import { todoActions } from "../../store/actions/todo.action";
+import { authHeader } from "../../commons/helpers/utils";
 
 class TodoItem extends Component {
     archiveClick = (todoId, value) => {
@@ -31,11 +32,35 @@ class TodoItem extends Component {
     };
     viewAttachmentClick = todoId => {
         const { dispatch, user } = this.props;
-        window.open(`http://127.0.0.1:3001/api/v1/todo/upload/${user.user.id}/${todoId}`)
+        /*Work around In case you want to download file without Auth */
+        // window.open(`http://127.0.0.1:3001/api/v1/todo/upload/${user.user.id}/${todoId}`)
+
+        fetch(`http://127.0.0.1:3001/api/v1/todo/upload/${user.user.id}/${todoId}`, {
+            method: "GET",
+            headers: authHeader()
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const objectURL = URL.createObjectURL(blob)
+            /*In case you want to display it on window */
+            // window.location = objectURL
+
+            /*In case you want to display it somewhere on page ( doesn't work for PDF ) */
+            // const myImage = document.getElementById(todoId)
+            // myImage.src = objectURL;
+
+            /*In case you want to download file */
+            if (window.navigator.msSaveOrOpenBlob) { // For IE:
+                navigator.msSaveBlob(blob, "download");
+            } else { // For other browsers:
+                var link = document.createElement('a');
+                link.href = objectURL;
+                link.download = "download";
+                link.click();
+                URL.revokeObjectURL(objectURL);
+            }
+        })
     };
-    // editClick = todoId => {
-    //     console.log(todoId);
-    // };
     render() {
         const { _id, name, priority, archived, attachment } = this.props;
         return (
@@ -70,9 +95,6 @@ class TodoItem extends Component {
                 >
                     Delete
                 </StyledButton>
-                {/* <StyledButton type="button" onClick={() => this.editClick(_id)}>
-                    Edit
-                </StyledButton> */}
                 {archived ? (
                     <StyledButton
                         type="button"

@@ -23,6 +23,8 @@ import StyledSection from "./../../commons/styled/StyledSection";
 import { connect } from "react-redux";
 import { todoActions } from "./../../store/actions/todo.action";
 import TodoList from "./../todoList/TodoList";
+import * as jsPDF from 'jspdf'
+import html2canvas from 'html2canvas';
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -33,7 +35,15 @@ class Dashboard extends Component {
         history.push("/login");
     };
     exportPdfClick = () => {
-        console.log("export PDF");
+        const input = document.getElementById('divToPrint');
+        html2canvas(input)
+            .then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+                pdf.addImage(imgData, 'JPEG', 20, 20);
+                //pdf.output('dataurlnewwindow');
+                pdf.save("download.pdf");
+            })
     };
     archiveClick = () => {
         const { dispatch } = this.props;
@@ -44,7 +54,7 @@ class Dashboard extends Component {
         const { dispatch, user } = this.props;
         const name = this.taskInput.value;
         const priority = this.priorityInput.value;
-        if (name && priority)
+        if (name && priority){
             dispatch(
                 todoActions.createTodo({
                     owner: user.user.id,
@@ -52,6 +62,9 @@ class Dashboard extends Component {
                     priority
                 })
             );
+            this.taskInput.value = ""
+            this.priorityInput.value = ""
+        }
     };
     render() {
         const { user, showArchived } = this.props;
@@ -124,7 +137,7 @@ class Dashboard extends Component {
                             <StyledButton type="submit">Add Task</StyledButton>
                         </Form1>
                     </StyledDiv>
-                    <StyledContainer>
+                    <StyledContainer id="divToPrint">
                         <TodoList />
                     </StyledContainer>
                 </StyledSection>
