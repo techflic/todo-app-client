@@ -64,7 +64,18 @@ class Dashboard extends Component {
             );
             this.taskInput.value = ""
             this.priorityInput.value = ""
+            this.priorityInput.style.backgroundColor = "#fff"
         }
+    };
+    changePriorityColor = e => {
+        const val = this.priorityInput.value
+        if(val === "High") 
+            this.priorityInput.style.backgroundColor = "tomato"
+        else if (val === "Medium")
+            this.priorityInput.style.backgroundColor = "#FFFF99"
+        else if (val === "Low")
+            this.priorityInput.style.backgroundColor = "lightgreen"
+        else this.priorityInput.style.backgroundColor = "#fff"
     };
     render() {
         const { user, showArchived } = this.props;
@@ -118,16 +129,16 @@ class Dashboard extends Component {
                                     this.priorityInput = ref;
                                 }}
                                 style={{
-                                    background: "palevioletred",
-                                    color: "#fff",
+                                    backgroundColor: "#fff",
+                                    color: "black",
                                     borderRadius: "3px",
-                                    border: "2px solid palevioletred",
                                     padding: "2px 6px",
                                     outline: "none",
                                     cursor: "pointer",
                                     marginRight: "4px",
                                     marginLeft: "4px"
                                 }}
+                                onChange={this.changePriorityColor}
                             >
                                 <option value="">--Priority--</option>
                                 <option value="High">High</option>

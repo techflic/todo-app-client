@@ -69,7 +69,7 @@ export const Label = styled.label`
 `;
 
 export const StyledContainer = styled.div`
-    width: 650px;
+    width: 750px;
     margin-top: 80px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -97,11 +97,12 @@ export const StyledList = styled.li`
 export const StyledLabel = styled.label`
     float: left;
     cursor: pointer;
+    min-width: 120px
     background-color: ${props => {
         if(props.color === "High")
             return "tomato"
         else if(props.color === "Medium")
-            return "lightyellow"
+            return "#FFFF99"
         else return "lightgreen"
     }};
 `;

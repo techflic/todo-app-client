@@ -34,7 +34,7 @@ export const HeaderSubTitle = styled.div`
     margin: 0;
     float: left;
     font-size: 16px;
-    color: #4e5359;
+    color: #bbb;
     text-decoration: none;
 `;
 export const HeaderNav = styled.nav`
@@ -54,9 +54,17 @@ export const HeaderNav2 = styled.nav`
 `;
 export const HeaderNav2Link = styled.button`
     display: inline-block;
-    color: #4e5359;
     text-decoration: none;
     cursor: pointer;
+    background: palevioletred;
+    color: #fff;
+    border-radius: 3px;
+    border: 2px solid palevioletred;
+    padding: 3px 10px;
+    outline: none;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-left: 5px;
 `;
 export const HeaderNavLink = styled.a`
     display: inline-block;

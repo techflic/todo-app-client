@@ -72,6 +72,7 @@ class TodoItem extends Component {
                     <StyledButton
                         type="button"
                         onClick={() => this.viewAttachmentClick(_id)}
+                        style={{width: "194px"}}
                     >
                         View attachment
                     </StyledButton>
