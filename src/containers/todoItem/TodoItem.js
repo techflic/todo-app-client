@@ -1,15 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-    StyledList,
-    StyledLabel,
-    StyledButton,
-    Input2,
-    Form1
-} from "./../../commons/styled/StyledUtils";
 import { connect } from "react-redux";
 import { todoActions } from "../../store/actions/todo.action";
 import { authHeader } from "../../commons/helpers/utils";
+import {
+    ListItem,
+    Checkbox,
+    ListItemText,
+    ListItemSecondaryAction,
+    Button
+} from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
+import Delete from "@material-ui/icons/DeleteForever";
+import Archive from "@material-ui/icons/Archive";
+import Unarchive from "@material-ui/icons/Unarchive";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import LabelIcon from "@material-ui/icons/LabelImportantOutlined";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class TodoItem extends Component {
     archiveClick = (todoId, value) => {
@@ -20,8 +28,7 @@ class TodoItem extends Component {
         const { dispatch } = this.props;
         dispatch(todoActions.deleteTodo(todoId));
     };
-    uploadClick = (e, todoId) => {
-        e.preventDefault();
+    uploadClick = todoId => {
         const { dispatch, user } = this.props;
         const file = this.fileTnput.files[0];
         if (file) {
@@ -35,83 +42,150 @@ class TodoItem extends Component {
         /*Work around In case you want to download file without Auth */
         // window.open(`http://127.0.0.1:3001/api/v1/todo/upload/${user.user.id}/${todoId}`)
 
-        fetch(`http://127.0.0.1:3001/api/v1/todo/upload/${user.user.id}/${todoId}`, {
-            method: "GET",
-            headers: authHeader()
-        })
-        .then(response => response.blob())
-        .then(blob => {
-            const objectURL = URL.createObjectURL(blob)
-            /*In case you want to display it on window */
-            // window.location = objectURL
-
-            /*In case you want to display it somewhere on page ( doesn't work for PDF ) */
-            // const myImage = document.getElementById(todoId)
-            // myImage.src = objectURL;
-
-            /*In case you want to download file */
-            if (window.navigator.msSaveOrOpenBlob) { // For IE:
-                navigator.msSaveBlob(blob, "download");
-            } else { // For other browsers:
-                var link = document.createElement('a');
-                link.href = objectURL;
-                link.download = "download";
-                link.click();
-                URL.revokeObjectURL(objectURL);
+        fetch(
+            `http://127.0.0.1:3001/api/v1/todo/upload/${
+                user.user.id
+            }/${todoId}`,
+            {
+                method: "GET",
+                headers: authHeader()
             }
-        })
+        )
+            .then(response => response.blob())
+            .then(blob => {
+                const objectURL = URL.createObjectURL(blob);
+                /*In case you want to display it on window */
+                // window.location = objectURL
+
+                /*In case you want to display it somewhere on page ( doesn't work for PDF ) */
+                // const myImage = document.getElementById(todoId)
+                // myImage.src = objectURL;
+
+                /*In case you want to download file */
+                if (window.navigator.msSaveOrOpenBlob) {
+                    // For IE:
+                    navigator.msSaveBlob(blob, "download");
+                } else {
+                    // For other browsers:
+                    var link = document.createElement("a");
+                    link.href = objectURL;
+                    link.download = "download";
+                    link.click();
+                    URL.revokeObjectURL(objectURL);
+                }
+            });
     };
+    completedClick = (e, value, todoId) => {
+        const { dispatch } = this.props;
+        dispatch(todoActions.editTodo(todoId, { completed: !value }));
+    };
+    getBackground = value => {
+        if (value.toLowerCase() === "high") return "#F44336";
+        if (value.toLowerCase() === "medium") return "#FFEE58";
+        if (value.toLowerCase() === "low") return "#B2FF59";
+    };
+    getTitle = value => {
+        if (value.toLowerCase() === "high") return "High Priority";
+        if (value.toLowerCase() === "medium") return "Medium Priority";
+        if (value.toLowerCase() === "low") return "Low Priority";
+    }
     render() {
-        const { _id, name, priority, archived, attachment } = this.props;
+        const {
+            _id,
+            name,
+            priority,
+            archived,
+            attachment,
+            completed
+        } = this.props;
         return (
-            <StyledList>
-                <StyledLabel htmlFor={name} color={priority}>
-                    {name}
-                </StyledLabel>
-                {attachment ? (
-                    <StyledButton
-                        type="button"
-                        onClick={() => this.viewAttachmentClick(_id)}
-                        style={{width: "194px"}}
-                    >
-                        View attachment
-                    </StyledButton>
-                ) : (
-                    <Form1 onSubmit={e => this.uploadClick(e, _id)}>
-                        <Input2
-                            name="file"
-                            type="file"
-                            ref={ref => {
-                                this.fileTnput = ref;
+            <ListItem divider>
+                <Tooltip style={{padding: "12px"}} title={this.getTitle(priority)} placement="top">
+                    <div>
+                        <LabelIcon
+                            style={{
+                                float: "left",
+                                color: this.getBackground(priority)
                             }}
                         />
-                        <StyledButton style={{ float: "right" }} type="submit">
-                            Upload
-                        </StyledButton>
-                    </Form1>
-                )}
-                <StyledButton
-                    type="button"
-                    onClick={() => this.deleteClick(_id)}
-                >
-                    Delete
-                </StyledButton>
-                {archived ? (
-                    <StyledButton
-                        type="button"
-                        onClick={() => this.archiveClick(_id, archived)}
+                    </div>
+                </Tooltip>
+                <Tooltip title="Edit" placement="top">
+                    <Checkbox
+                        checked={completed}
+                        color="primary"
+                        onChange={e => this.completedClick(e, completed, _id)}
+                    />
+                </Tooltip>
+                <ListItemText
+                    style={{
+                        textDecoration: completed ? "line-through" : null
+                    }}
+                    primary={name}
+                />
+                <ListItemSecondaryAction>
+                    {attachment ? (
+                        <Button
+                            color="primary"
+                            aria-label="View attachment"
+                            onClick={() => this.viewAttachmentClick(_id)}
+                        >
+                            <CloudDownloadIcon style={{ marginRight: 10 }} />
+                            Download
+                        </Button>
+                    ) : (
+                        <FormControl style={{ display: "inline" }}>
+                            <input
+                                style={{ display: "none" }}
+                                id="contained-button-file"
+                                type="file"
+                                onChange={() => this.uploadClick(_id)}
+                                ref={ref => {
+                                    this.fileTnput = ref;
+                                }}
+                            />
+                            <label htmlFor="contained-button-file">
+                                <Button
+                                    color="primary"
+                                    component="span"
+                                >
+                                    <CloudUploadIcon
+                                        style={{ marginRight: 36 }}
+                                    />
+                                    Upload
+                                </Button>
+                            </label>
+                        </FormControl>
+                    )}
+                    {archived ? (
+                        <Button
+                            color="primary"
+                            aria-label="UnArchive Todo"
+                            onClick={() => this.archiveClick(_id, archived)}
+                        >
+                            <Unarchive style={{ marginRight: 10 }} />
+                            UnArchive
+                        </Button>
+                    ) : (
+                        <Button
+                            color="primary"
+                            aria-label="Archive Todo"
+                            onClick={() => this.archiveClick(_id, archived)}
+                        >
+                            <Archive style={{ marginRight: 10 }} />
+                            Archive
+                        </Button>
+                    )}
+                    <Button
+                        color="primary"
+                        aria-label="Delete Todo"
+                        onClick={() => this.deleteClick(_id)}
                     >
-                        Restore
-                    </StyledButton>
-                ) : (
-                    <StyledButton
-                        type="button"
-                        onClick={() => this.archiveClick(_id, archived)}
-                    >
-                        Archive
-                    </StyledButton>
-                )}
-            </StyledList>
+                        <Delete style={{ marginRight: 10 }} />
+                        Delete
+                    </Button>
+                </ListItemSecondaryAction>
+            </ListItem>
         );
     }
 }

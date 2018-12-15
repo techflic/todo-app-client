@@ -1,6 +1,7 @@
 import { userConstants } from "../constants/actionTypes";
 import { history } from "./../../commons/helpers/history";
 import { userService } from "./../../services/user.service";
+import { openSnackbar } from './../../containers/notifier/Notifier';
 
 export const userActions = {
     login,
@@ -11,7 +12,7 @@ export const userActions = {
 function login(username, password) {
     return (dispatch, getState) => {
         dispatch(request({ username }));
-
+        
         userService.login(username, password).then(
             response => {
                 dispatch(success(response));
@@ -19,6 +20,7 @@ function login(username, password) {
             },
             error => {
                 dispatch(failure(error));
+                openSnackbar({ message: error });
             }
         );
     };
@@ -47,9 +49,11 @@ function register(user) {
             response => {
                 dispatch(success(response));
                 history.push("/login");
+                openSnackbar({ message: response.message });
             },
             error => {
                 dispatch(failure(error));
+                openSnackbar({ message: error });
             }
         );
     };

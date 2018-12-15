@@ -8,6 +8,7 @@ export default (state = INITIAL_STATE, action) => {
         case userConstants.LOGIN_REQUEST:
             return {
                 ...state,
+                error: null,
                 loggingIn: true
             };
         case userConstants.LOGIN_SUCCESS:
@@ -21,6 +22,7 @@ export default (state = INITIAL_STATE, action) => {
         case userConstants.LOGIN_FAILURE:
             return {
                 ...state,
+                loggingIn: false,
                 error: action.error
             };
 
@@ -30,6 +32,7 @@ export default (state = INITIAL_STATE, action) => {
         case userConstants.REGISTER_REQUEST:
             return {
                 ...state,
+                error: null,
                 registering: true
             };
         case userConstants.REGISTER_SUCCESS:
@@ -43,6 +46,7 @@ export default (state = INITIAL_STATE, action) => {
         case userConstants.REGISTER_FAILURE:
             return {
                 ...state,
+                registering: false,
                 error: action.error
             };
 

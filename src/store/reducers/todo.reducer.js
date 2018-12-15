@@ -1,7 +1,13 @@
 import { todoConstants } from "./../constants/actionTypes";
 
 const _INITIAL_STATE = {
-    showArchived: false
+    showArchived: false,
+    error: null,
+    requestingTodo: false,
+    creatingTodo: false,
+    editingTodo: false,
+    deleting: false,
+    uploading: false
 };
 
 export default (state = _INITIAL_STATE, action) => {
@@ -16,11 +22,11 @@ export default (state = _INITIAL_STATE, action) => {
                 ...state,
                 requestingTodo: false,
                 todos: action.payload.data,
-                error: null
             };
         case todoConstants.GET_TODO_FAILURE:
             return {
                 ...state,
+                requestingTodo: false,
                 error: action.error
             };
 
@@ -33,12 +39,13 @@ export default (state = _INITIAL_STATE, action) => {
             return {
                 ...state,
                 creatingTodo: false,
+                showArchived: false,
                 todos: action.payload.data,
-                error: null
             };
         case todoConstants.CREATE_TODO_FAILURE:
             return {
                 ...state,
+                creatingTodo: false,
                 error: action.error
             };
 
@@ -52,11 +59,11 @@ export default (state = _INITIAL_STATE, action) => {
                 ...state,
                 editingTodo: false,
                 todos: action.payload.data,
-                error: null
             };
         case todoConstants.EDIT_TODO_FAILURE:
             return {
                 ...state,
+                editingTodo: false,
                 error: action.error
             };
 
@@ -70,11 +77,11 @@ export default (state = _INITIAL_STATE, action) => {
                 ...state,
                 deleting: false,
                 todos: action.payload.data,
-                error: null
             };
         case todoConstants.DELETE_TODO_FAILURE:
             return {
                 ...state,
+                deleting: false,
                 error: action.error
             };
 
@@ -88,11 +95,11 @@ export default (state = _INITIAL_STATE, action) => {
                 ...state,
                 uploading: false,
                 todos: action.payload.data,
-                error: null
             };
         case todoConstants.UPLOAD_FILE_FAILURE:
             return {
                 ...state,
+                uploading: false,
                 error: action.error
             };
 
