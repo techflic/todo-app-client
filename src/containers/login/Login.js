@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import LockIcon from "@material-ui/icons/LockOutlined";
@@ -14,7 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Notifier from './../notifier/Notifier';
+import Notifier from './../../components/notifier/Notifier';
 
 const styles = theme => ({
     main: {
@@ -53,8 +51,7 @@ class Login extends Component {
     constructor(props) {
         super(props);
 
-        localStorage.removeItem("auth");
-        localStorage.removeItem("user");
+        this.props.dispatch(userActions.logout())
 
         this.state = {
             username: "",

@@ -29,7 +29,7 @@ class TodoItem extends Component {
         dispatch(todoActions.deleteTodo(todoId));
     };
     uploadClick = todoId => {
-        const { dispatch, user } = this.props;
+        const { dispatch } = this.props;
         const file = this.fileTnput.files[0];
         if (file) {
             const formData = new FormData();
@@ -38,7 +38,7 @@ class TodoItem extends Component {
         }
     };
     viewAttachmentClick = todoId => {
-        const { dispatch, user } = this.props;
+        const { user } = this.props;
         /*Work around In case you want to download file without Auth */
         // window.open(`http://127.0.0.1:3001/api/v1/todo/upload/${user.user.id}/${todoId}`)
 

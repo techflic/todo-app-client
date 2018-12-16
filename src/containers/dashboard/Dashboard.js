@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { TextField, Paper, Button, Grid, InputLabel } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
-import Notifier, { openSnackbar } from './../notifier/Notifier';
+import Notifier, { openSnackbar } from './../../components/notifier/Notifier';
 
 const styles = theme => ({
     root: {
@@ -70,11 +70,11 @@ class Dashboard extends Component {
             this.inputTodoName.value = "";
             this.inputTodoPriority.value = "";
         }else{
-            openSnackbar({message : "Both Todo and Priority are required."})
+            openSnackbar({message : "Both Todo and Priority are Required."})
         }
     };
     render() {
-        const { user, showArchived, classes } = this.props;
+        const { showArchived, classes } = this.props;
         return (
             <React.Fragment>
                 <Notifier />

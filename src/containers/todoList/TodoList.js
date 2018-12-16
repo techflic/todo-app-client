@@ -52,7 +52,7 @@ class TodoList extends Component {
                         />
                     </div>
                 )}
-                {_todos.length ? (
+                {(_todos.length && !requestingTodo) ? (
                     <Paper style={{ margin: 16 }}>
                         <List>
                             {_todos.map(_todo => (

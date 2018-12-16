@@ -1,7 +1,7 @@
 import { userConstants } from "../constants/actionTypes";
 import { history } from "./../../commons/helpers/history";
 import { userService } from "./../../services/user.service";
-import { openSnackbar } from './../../containers/notifier/Notifier';
+import { openSnackbar } from './../../components/notifier/Notifier';
 
 export const userActions = {
     login,

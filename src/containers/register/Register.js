@@ -13,7 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Notifier from './../notifier/Notifier';
+import Notifier from './../../components/notifier/Notifier';
 
 const styles = theme => ({
     main: {
