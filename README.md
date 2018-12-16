@@ -1,3 +1,34 @@
+# Todo App
+
+A simple and user friendly app to manage your day to day tasks with an ability of : 
+  - 
+  - File management ( Upload, Download ) for each of your task if required
+  - Edit, Archive, Delete
+  - Prioritise while Adding each task
+  - Export your list to PDF and carry away
+  - User management, with a feature of email notification upon registration
+
+App is built with Node-MongoDB and React-Redux architecture.
+Node provides the RESTful API. React provides the frontend and accesses the API. MongoDB stores like a hoarder.
+
+## Requirements
+
+- [Node and npm](http://nodejs.org)
+- Strong Internet to avoid Topology error as DB is hosted on mongo lab.
+
+## Installation
+
+1. Clone the frontend repository: `git clone https://github.com/vijayyennam/todo-app-client.git`
+2. Change the directory
+3. Install the application: `npm install`
+4. Run the application: `npm start`
+5. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+6. Also you will have to clone and run the Node API server separately from [https://github.com/vijayyennam/todo-app-server](https://github.com/vijayyennam/todo-app-server)
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
