@@ -2,7 +2,7 @@
 
 A simple and user friendly app to manage your day to day tasks with an ability of : 
   - 
-  - File management ( Upload, Download ) for each of your task if required
+  - File management ( Attach, View, Download ) for each of your task if required
   - Edit, Archive, Delete
   - Prioritise while Adding each task
   - Export your list to PDF and carry away
