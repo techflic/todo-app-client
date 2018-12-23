@@ -1,19 +1,21 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Formik } from "formik";
 import { connect } from "react-redux";
-import { userActions } from "./../../store/actions/user.action";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import AddIcon from "@material-ui/icons/Add";
-import Paper from "@material-ui/core/Paper";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Notifier from './../../components/notifier/Notifier';
+import { Link } from "react-router-dom";
+import { userActions } from "../../store";
+import { Notifier } from "../../components";
+import { Formik } from "formik";
+import {
+    Avatar,
+    Button,
+    FormControl,
+    Input,
+    InputLabel,
+    Paper,
+    FormHelperText,
+    Typography,
+    withStyles
+} from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 
 const styles = theme => ({
     main: {
@@ -56,7 +58,7 @@ class Register extends Component {
                 <Notifier />
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
-                        <AddIcon />
+                        <Add />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Register Yourself

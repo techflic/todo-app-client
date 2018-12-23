@@ -1,4 +1,4 @@
-import { authHeader } from "./../commons/helpers/utils";
+import { authHeader } from "../commons";
 import { userService } from "./user.service";
 
 export const todoService = {

@@ -1,33 +1,42 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { todoActions } from "../../store/actions/todo.action";
-import { authHeader } from "../../commons/helpers/utils";
+import PropTypes from "prop-types";
+import { todoActions } from "../../store";
+import { authHeader, getBackground, getTitle } from "../../commons";
 import {
     ListItem,
     Checkbox,
     ListItemText,
     ListItemSecondaryAction,
-    Button
+    Button,
+    FormControl,
+    Tooltip
 } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import Delete from "@material-ui/icons/DeleteForever";
-import Archive from "@material-ui/icons/Archive";
-import Unarchive from "@material-ui/icons/Unarchive";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import LabelIcon from "@material-ui/icons/LabelImportantOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
+import {
+    DeleteForever,
+    Archive,
+    Unarchive,
+    CloudUpload,
+    CloudDownload,
+    LabelImportantOutlined
+} from "@material-ui/icons";
 
 class TodoItem extends Component {
     archiveClick = (todoId, value) => {
         const { dispatch } = this.props;
         dispatch(todoActions.editTodo(todoId, { archived: !value }));
     };
+
     deleteClick = todoId => {
         const { dispatch } = this.props;
         dispatch(todoActions.deleteTodo(todoId));
     };
+
+    completedClick = (e, value, todoId) => {
+        const { dispatch } = this.props;
+        dispatch(todoActions.editTodo(todoId, { completed: !value }));
+    };
+
     uploadClick = todoId => {
         const { dispatch } = this.props;
         const file = this.fileTnput.files[0];
@@ -37,6 +46,7 @@ class TodoItem extends Component {
             dispatch(todoActions.uploadFile(todoId, formData));
         }
     };
+
     viewAttachmentClick = todoId => {
         const { user } = this.props;
         /*Work around In case you want to download file without Auth */
@@ -55,40 +65,27 @@ class TodoItem extends Component {
             .then(blob => {
                 const objectURL = URL.createObjectURL(blob);
                 /*In case you want to display it on window */
-                // window.location = objectURL
+                window.location = objectURL
 
                 /*In case you want to display it somewhere on page ( doesn't work for PDF ) */
                 // const myImage = document.getElementById(todoId)
                 // myImage.src = objectURL;
 
                 /*In case you want to download file */
-                if (window.navigator.msSaveOrOpenBlob) {
-                    // For IE:
-                    navigator.msSaveBlob(blob, "download");
-                } else {
-                    // For other browsers:
-                    var link = document.createElement("a");
-                    link.href = objectURL;
-                    link.download = "download";
-                    link.click();
-                    URL.revokeObjectURL(objectURL);
-                }
+                // if (window.navigator.msSaveOrOpenBlob) {
+                //     // For IE:
+                //     navigator.msSaveBlob(blob, "download");
+                // } else {
+                //     // For other browsers:
+                //     let link = document.createElement("a");
+                //     link.href = objectURL;
+                //     link.download = "download";
+                //     link.click();
+                //     URL.revokeObjectURL(objectURL);
+                // }
             });
     };
-    completedClick = (e, value, todoId) => {
-        const { dispatch } = this.props;
-        dispatch(todoActions.editTodo(todoId, { completed: !value }));
-    };
-    getBackground = value => {
-        if (value.toLowerCase() === "high") return "#F44336";
-        if (value.toLowerCase() === "medium") return "#FFEE58";
-        if (value.toLowerCase() === "low") return "#B2FF59";
-    };
-    getTitle = value => {
-        if (value.toLowerCase() === "high") return "High Priority";
-        if (value.toLowerCase() === "medium") return "Medium Priority";
-        if (value.toLowerCase() === "low") return "Low Priority";
-    }
+    
     render() {
         const {
             _id,
@@ -98,14 +95,19 @@ class TodoItem extends Component {
             attachment,
             completed
         } = this.props;
+        
         return (
             <ListItem divider>
-                <Tooltip style={{padding: "12px"}} title={this.getTitle(priority)} placement="top">
+                <Tooltip
+                    style={{ padding: "12px" }}
+                    title={getTitle(priority)}
+                    placement="top"
+                >
                     <div>
-                        <LabelIcon
+                        <LabelImportantOutlined
                             style={{
                                 float: "left",
-                                color: this.getBackground(priority)
+                                color: getBackground(priority)
                             }}
                         />
                     </div>
@@ -129,9 +131,10 @@ class TodoItem extends Component {
                             color="primary"
                             aria-label="View attachment"
                             onClick={() => this.viewAttachmentClick(_id)}
+                            style={{ paddingRight: 36 }}
                         >
-                            <CloudDownloadIcon style={{ marginRight: 10 }} />
-                            Download
+                            <CloudDownload style={{ marginRight: 10 }} />
+                            View
                         </Button>
                     ) : (
                         <FormControl style={{ display: "inline" }}>
@@ -145,14 +148,9 @@ class TodoItem extends Component {
                                 }}
                             />
                             <label htmlFor="contained-button-file">
-                                <Button
-                                    color="primary"
-                                    component="span"
-                                >
-                                    <CloudUploadIcon
-                                        style={{ marginRight: 36 }}
-                                    />
-                                    Upload
+                                <Button color="primary" component="span">
+                                    <CloudUpload  style={{ marginRight: 10 }}  />
+                                    Attach
                                 </Button>
                             </label>
                         </FormControl>
@@ -181,7 +179,7 @@ class TodoItem extends Component {
                         aria-label="Delete Todo"
                         onClick={() => this.deleteClick(_id)}
                     >
-                        <Delete style={{ marginRight: 10 }} />
+                        <DeleteForever style={{ marginRight: 10 }} />
                         Delete
                     </Button>
                 </ListItemSecondaryAction>
@@ -191,18 +189,19 @@ class TodoItem extends Component {
 }
 
 TodoItem.propTypes = {
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     priority: PropTypes.string.isRequired,
     archived: PropTypes.bool.isRequired,
-    attachment: PropTypes.bool.isRequired
+    attachment: PropTypes.bool.isRequired,
+    completed: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { todo, user } = state;
+    const {user} = state
     return {
-        todo,
         user
-    };
-};
+    }
+}
 
 export default connect(mapStateToProps)(TodoItem);

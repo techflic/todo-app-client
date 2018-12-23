@@ -1,4 +1,4 @@
-import { todoConstants } from "./../constants/actionTypes";
+import { todoConstants } from "../constants";
 
 const _INITIAL_STATE = {
     showArchived: false,

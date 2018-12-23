@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { Router, Route } from "react-router-dom";
-import { history } from "./../../commons/helpers/history";
-import { PrivateRoute } from "./../privateRoute/PrivateRoute";
-import Dashboard from "./../../containers/dashboard/Dashboard";
-import Login from "./../../containers/login/Login";
-import Register from "./../../containers/register/Register";
+import { history } from "../../commons";
+import { Dashboard, Login, Register } from "../../containers";
+import PrivateRoute from "../PrivateRoute";
 
 class App extends Component {
     render() {

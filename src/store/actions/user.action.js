@@ -1,7 +1,7 @@
-import { userConstants } from "../constants/actionTypes";
-import { history } from "./../../commons/helpers/history";
-import { userService } from "./../../services/user.service";
-import { openSnackbar } from './../../components/notifier/Notifier';
+import { userConstants } from "../constants";
+import { history } from "../../commons";
+import { userService } from "./../../services";
+import { openSnackbar } from './../../components';
 
 export const userActions = {
     login,

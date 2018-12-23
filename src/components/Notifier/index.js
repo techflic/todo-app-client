@@ -8,21 +8,25 @@ class Notifier extends Component {
         open: false,
         message: ""
     };
+
     componentDidMount() {
         openSnackbarFn = this.openSnackbar;
     }
+
     openSnackbar = ({ message }) => {
         this.setState({
             open: true,
             message
         });
     };
+
     handleSnackbarClose = () => {
         this.setState({
             open: false,
             message: ""
         });
     };
+    
     render() {
         const message = (
             <span
@@ -45,8 +49,8 @@ class Notifier extends Component {
     }
 }
 
+export default Notifier;
+
 export function openSnackbar({ message }) {
     openSnackbarFn({ message });
 }
-
-export default Notifier;

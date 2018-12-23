@@ -1,15 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./components/app/App";
+import { App } from "./components";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import configureStore from "./store/configureStore";
+import { configureStore } from "./store";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import indigo from '@material-ui/core/colors/indigo';
-import green from '@material-ui/core/colors/green';
-import red from '@material-ui/core/colors/red';
+import { indigo, green, red } from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
     palette: {
@@ -43,7 +41,7 @@ ReactDOM.render(
     <Provider store={store}>
         <MuiThemeProvider theme={theme}>
             <CssBaseline />
-                <App />
+            <App />
         </MuiThemeProvider>
     </Provider>,
     document.getElementById("root")

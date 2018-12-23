@@ -1,5 +1,5 @@
-import { todoConstants } from "./../constants/actionTypes";
-import { todoService } from "./../../services/todo.services";
+import { todoConstants } from "./../constants";
+import { todoService } from "./../../services";
 
 export const todoActions = {
     createTodo,

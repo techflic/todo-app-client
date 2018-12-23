@@ -1,18 +1,20 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { userActions } from "./../../store/actions/user.action";
 import { connect } from "react-redux";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import LockIcon from "@material-ui/icons/LockOutlined";
-import Paper from "@material-ui/core/Paper";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Notifier from './../../components/notifier/Notifier';
+import { Link } from "react-router-dom";
+import { userActions } from "../../store";
+import { Notifier } from "../../components";
+import {
+    Avatar,
+    Button,
+    FormControl,
+    Input,
+    InputLabel,
+    Paper,
+    FormHelperText,
+    Typography,
+    withStyles
+} from "@material-ui/core";
+import { LockOutlined } from "@material-ui/icons";
 
 const styles = theme => ({
     main: {
@@ -51,7 +53,7 @@ class Login extends Component {
     constructor(props) {
         super(props);
 
-        this.props.dispatch(userActions.logout())
+        this.props.dispatch(userActions.logout());
 
         this.state = {
             username: "",
@@ -59,6 +61,7 @@ class Login extends Component {
             submitted: false
         };
     }
+
     loginClick = e => {
         e.preventDefault();
 
@@ -70,12 +73,14 @@ class Login extends Component {
             dispatch(userActions.login(username, password));
         }
     };
+
     handleInputChange = e => {
         const { name, value } = e.target;
         this.setState({
             [name]: value
         });
     };
+    
     render() {
         const { loggingIn, classes } = this.props;
         const { username, password, submitted } = this.state;
@@ -84,7 +89,7 @@ class Login extends Component {
                 <Notifier />
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
-                        <LockIcon />
+                        <LockOutlined />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Log in
