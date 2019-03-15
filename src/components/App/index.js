@@ -8,7 +8,7 @@ class App extends Component {
     render() {
         return (
             // <Router history={history}>
-            <Router>
+            <Router basename="/app">
                 <React.Fragment>
                     <PrivateRoute exact path="/" component={Dashboard} />
                     <Route path="/login" component={Login} />
