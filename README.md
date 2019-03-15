@@ -1,4 +1,4 @@
-# Todo App
+# Todo App 
 
 A simple and user friendly app to manage your day to day tasks with an ability of : 
   - 
