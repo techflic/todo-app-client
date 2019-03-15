@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { userActions } from "../../store";
 import { Notifier } from "../../components";
 import { Formik } from "formik";
@@ -51,10 +51,16 @@ const styles = theme => ({
 });
 
 class Register extends Component {
+
+    callSession () {
+        this.props.history.push('/')
+    }
+
     render() {
-        const { registering, classes } = this.props;
+        const { registering, registered, classes } = this.props;
         return (
             <main className={classes.main}>
+                {registered && this.callSession()}
                 <Notifier />
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
@@ -194,9 +200,10 @@ class Register extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        registering: state.user.registering
+        registering: state.user.registering,
+        registered: state.user.registered
     };
 };
 
 const MuiRegister = withStyles(styles)(Register);
-export default connect(mapStateToProps)(MuiRegister);
+export default withRouter(connect(mapStateToProps)(MuiRegister));

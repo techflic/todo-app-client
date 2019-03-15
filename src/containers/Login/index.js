@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { userActions } from "../../store";
 import { Notifier } from "../../components";
 import {
@@ -62,6 +62,10 @@ class Login extends Component {
         };
     }
 
+    callSession = () => {
+        this.props.history.push('/')
+    }
+
     loginClick = e => {
         e.preventDefault();
 
@@ -82,10 +86,11 @@ class Login extends Component {
     };
     
     render() {
-        const { loggingIn, classes } = this.props;
+        const { loggingIn, loggedIn, classes } = this.props;
         const { username, password, submitted } = this.state;
         return (
             <main className={classes.main}>
+                {loggedIn && this.callSession()}
                 <Notifier />
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
@@ -160,12 +165,13 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { loggingIn, error } = state.user;
+    const { loggingIn, loggedIn, error } = state.user;
     return {
         loggingIn,
+        loggedIn,
         error
     };
 };
 
 const MuiLogin = withStyles(styles)(Login);
-export default connect(mapStateToProps)(MuiLogin);
+export default withRouter(connect(mapStateToProps)(MuiLogin));

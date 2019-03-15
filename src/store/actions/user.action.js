@@ -16,7 +16,7 @@ function login(username, password) {
         userService.login(username, password).then(
             response => {
                 dispatch(success(response));
-                history.push("/");
+                // history.push("/");
             },
             error => {
                 dispatch(failure(error));
@@ -48,7 +48,7 @@ function register(user) {
         userService.register(user).then(
             response => {
                 dispatch(success(response));
-                history.push("/login");
+                // history.push("/login");
                 openSnackbar({ message: response.message });
             },
             error => {
